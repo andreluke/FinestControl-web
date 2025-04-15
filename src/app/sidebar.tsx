@@ -9,8 +9,9 @@ import Image from 'next/image'
 const menuItems: MenuItem[] = [
   { id: 'dashboard', icon: 'layout-grid', label: 'Dashboard' },
   { id: 'pagamento', icon: 'credit-card', label: 'Pagamento' },
-  { id: 'transacao', icon: 'banknote-arrow-down', label: 'Transação' },
   { id: 'tags', icon: 'tag', label: 'Tags' },
+
+  { id: 'transacao', icon: 'banknote-arrow-down', label: 'Transação' },
 ]
 
 export function SideBar() {
