@@ -11,15 +11,11 @@ import {
 } from '@/components/ui/chart'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
-export function TransactionChart({ chartData }: TransactionChartProps) {
+export function SpendsChart({ chartData }: TransactionChartProps) {
   const chartConfig = {
     spend: {
       label: 'Spend',
       color: '#9e6efe',
-    },
-    income: {
-      label: 'Income',
-      color: '#9e6efe6a',
     },
   } satisfies ChartConfig
 
@@ -37,7 +33,6 @@ export function TransactionChart({ chartData }: TransactionChartProps) {
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
         <Bar dataKey="spend" fill="var(--color-spend)" radius={4} />
-        <Bar dataKey="income" fill="var(--color-income)" radius={4} />
       </BarChart>
     </ChartContainer>
   )

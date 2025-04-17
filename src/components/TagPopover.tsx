@@ -15,7 +15,7 @@ export function TagPopover({ selectedColor, onColorChange }: TagPopoverProps) {
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="shadow-sm p-2 border-2 rounded-full w-10"
+          className="shadow-sm p-2 border-2 rounded-full w-10 cursor-pointer"
           style={{ borderColor: selectedColor }}
         >
           <Palette className="w-5 h-5" style={{ color: selectedColor }} />

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Toaster } from '@/components/ui/sonner'
 import Providers from '@/lib/provider'
 import { Poppins } from 'next/font/google'
 import { Suspense } from 'react'
@@ -29,7 +30,9 @@ export default function RootLayout({
     >
       <body className="bg-dark-400">
         <Suspense fallback={<Loading />}>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children} <Toaster richColors closeButton />
+          </Providers>
         </Suspense>
       </body>
     </html>

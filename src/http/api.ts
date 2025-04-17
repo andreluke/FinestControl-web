@@ -347,6 +347,11 @@ export type GetMonthAmount500 = {
   message: string;
 };
 
+export type GetRoughAmount500 = {
+  name: string;
+  message: string;
+};
+
 export type GetAllTags200TagsItem = {
   /**
    * @minimum -2147483648
@@ -736,6 +741,34 @@ export type RemovePaymentType200 = {
 };
 
 export type RemovePaymentType404 = {
+  name: string;
+  message: string;
+};
+
+export type RestorePaymentType200 = {
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  id?: number;
+  /** @maxLength 255 */
+  name?: string;
+  /** @maxLength 255 */
+  icon?: string;
+  /**
+   * @maxLength 255
+   * @nullable
+   */
+  description?: string | null;
+  /** @nullable */
+  createdAt?: string | null;
+  /** @nullable */
+  updatedAt?: string | null;
+  /** @nullable */
+  removedAt?: string | null;
+};
+
+export type RestorePaymentType404 = {
   name: string;
   message: string;
 };
@@ -1622,6 +1655,102 @@ export function useGetMonthAmount<TData = Awaited<ReturnType<typeof getMonthAmou
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMonthAmountQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get last total amount in number
+ */
+export const getGetRoughAmountUrl = () => {
+
+
+  
+
+  return `http://localhost:3030/total-amount/number`
+}
+
+export const getRoughAmount = async ( options?: RequestInit): Promise<number> => {
+  
+  return http<number>(getGetRoughAmountUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetRoughAmountQueryKey = () => {
+    return [`http://localhost:3030/total-amount/number`] as const;
+    }
+
+    
+export const getGetRoughAmountQueryOptions = <TData = Awaited<ReturnType<typeof getRoughAmount>>, TError = GetRoughAmount500>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoughAmount>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoughAmountQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoughAmount>>> = ({ signal }) => getRoughAmount({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoughAmount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRoughAmountQueryResult = NonNullable<Awaited<ReturnType<typeof getRoughAmount>>>
+export type GetRoughAmountQueryError = GetRoughAmount500
+
+
+export function useGetRoughAmount<TData = Awaited<ReturnType<typeof getRoughAmount>>, TError = GetRoughAmount500>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoughAmount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoughAmount>>,
+          TError,
+          Awaited<ReturnType<typeof getRoughAmount>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoughAmount<TData = Awaited<ReturnType<typeof getRoughAmount>>, TError = GetRoughAmount500>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoughAmount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoughAmount>>,
+          TError,
+          Awaited<ReturnType<typeof getRoughAmount>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoughAmount<TData = Awaited<ReturnType<typeof getRoughAmount>>, TError = GetRoughAmount500>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoughAmount>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get last total amount in number
+ */
+
+export function useGetRoughAmount<TData = Awaited<ReturnType<typeof getRoughAmount>>, TError = GetRoughAmount500>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoughAmount>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetRoughAmountQueryOptions(options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -2654,14 +2783,14 @@ export const useUpdatePaymentType = <TError = UpdatePaymentType404,
     }
     
 /**
- * @summary Restore a Payment Type
+ * @summary Remove a Payment Type
  */
 export const getRemovePaymentTypeUrl = (id: string,) => {
 
 
   
 
-  return `http://localhost:3030/payment-type/restore/${id}`
+  return `http://localhost:3030/payment-type/remove/${id}`
 }
 
 export const removePaymentType = async (id: string, options?: RequestInit): Promise<RemovePaymentType200> => {
@@ -2708,7 +2837,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type RemovePaymentTypeMutationError = RemovePaymentType404
 
     /**
- * @summary Restore a Payment Type
+ * @summary Remove a Payment Type
  */
 export const useRemovePaymentType = <TError = RemovePaymentType404,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof removePaymentType>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof http>}
@@ -2720,6 +2849,77 @@ export const useRemovePaymentType = <TError = RemovePaymentType404,
       > => {
 
       const mutationOptions = getRemovePaymentTypeMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
+ * @summary Restore a Payment Type
+ */
+export const getRestorePaymentTypeUrl = (id: string,) => {
+
+
+  
+
+  return `http://localhost:3030/payment-type/restore/${id}`
+}
+
+export const restorePaymentType = async (id: string, options?: RequestInit): Promise<RestorePaymentType200> => {
+  
+  return http<RestorePaymentType200>(getRestorePaymentTypeUrl(id),
+  {      
+    ...options,
+    method: 'PATCH'
+    
+    
+  }
+);}
+
+
+
+
+export const getRestorePaymentTypeMutationOptions = <TError = RestorePaymentType404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof restorePaymentType>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationOptions<Awaited<ReturnType<typeof restorePaymentType>>, TError,{id: string}, TContext> => {
+    
+const mutationKey = ['restorePaymentType'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof restorePaymentType>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  restorePaymentType(id,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RestorePaymentTypeMutationResult = NonNullable<Awaited<ReturnType<typeof restorePaymentType>>>
+    
+    export type RestorePaymentTypeMutationError = RestorePaymentType404
+
+    /**
+ * @summary Restore a Payment Type
+ */
+export const useRestorePaymentType = <TError = RestorePaymentType404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof restorePaymentType>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof restorePaymentType>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getRestorePaymentTypeMutationOptions(options);
 
       return useMutation(mutationOptions , queryClient);
     }

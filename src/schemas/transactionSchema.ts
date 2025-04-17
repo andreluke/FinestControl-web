@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const createTransactionSchema = z.object({
-  amount: z.string().min(1, { message: 'Quantidade é obrigatória' }),
+  amount: z.number().min(1, { message: 'Quantidade é obrigatória' }),
   isSpend: z.boolean(),
   paymentTypeId: z
     .string()

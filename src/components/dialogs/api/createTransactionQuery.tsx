@@ -9,6 +9,7 @@ import {
   getGetAllTagsQueryKey,
   getGetAllTransactionsQueryKey,
   getGetLastAmountQueryKey,
+  getGetRoughAmountQueryKey,
 } from '@/http/api'
 import type { QueryClient } from '@tanstack/react-query'
 
@@ -56,19 +57,11 @@ export function createTransactionOnSuccess(
     }
   )
 
-  queryClient.setQueryData<GetLastAmount200>(
-    getGetLastAmountQueryKey(),
-    oldAmount => {
-      return {
-        amount: newTransaction.isSpend
-          ? (oldAmount?.total ?? 0) - newTransaction.amount
-          : (oldAmount?.total ?? 0) + newTransaction.amount,
-        id: oldAmount?.id ?? 0,
-        total: oldAmount?.total ?? 0,
-        lastAmount: oldAmount?.lastAmount ?? null,
-        createdAt: oldAmount?.createdAt ?? null,
-        lastTransaction: oldAmount?.lastTransaction ?? 0,
-      }
-    }
-  )
+  queryClient.setQueryData<number>(getGetRoughAmountQueryKey(), lastAmount => {
+    const old = lastAmount ?? 0
+
+    return newTransaction.isSpend
+      ? old - newTransaction.amount
+      : old + newTransaction.amount
+  })
 }

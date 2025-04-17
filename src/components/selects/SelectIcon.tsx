@@ -12,10 +12,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useVirtualizedSearchList } from '@/hooks/useVirtualizedSearchList'
+import { CheckIcon } from 'lucide-react'
 import { DynamicIcon, type IconName, iconNames } from 'lucide-react/dynamic'
-import { useEffect, useMemo, useRef, useState } from 'react'
-
-const BATCH_SIZE = 30
+import { useState } from 'react'
 
 export function SelectIcon({
   value,
@@ -27,31 +27,22 @@ export function SelectIcon({
   defaultValue?: IconName
 }) {
   const [open, setOpen] = useState(false)
-  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE)
-  const [searchQuery, setSearchQuery] = useState('')
-  const listRef = useRef<HTMLDivElement>(null)
 
-  const filteredIcons = useMemo(() => {
-    return iconNames.filter(name =>
-      name.toLowerCase().includes(searchQuery.toLowerCase())
+  const { listRef, searchQuery, setSearchQuery, visibleItems, handleScroll } =
+    useVirtualizedSearchList<IconName>(
+      iconNames,
+      (name, query) => name.toLowerCase().includes(query.toLowerCase()),
+      30
     )
-  }, [searchQuery])
-
-  const visibleIcons = filteredIcons.slice(0, visibleCount)
-
-  const handleScroll = () => {
-    const list = listRef.current
-    if (list && list.scrollTop + list.clientHeight >= list.scrollHeight - 10) {
-      setVisibleCount(prev => Math.min(prev + BATCH_SIZE, filteredIcons.length))
-    }
-  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="inline-flex justify-between items-center bg-background hover:bg-accent px-3 py-2 border rounded-md w-[180px] text-sm"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          className="inline-flex justify-between items-center bg-background hover:bg-accent px-3 py-2 border rounded-md w-[180px] text-sm cursor-pointer"
         >
           {value ? (
             <div className="flex items-center space-x-2">
@@ -65,12 +56,15 @@ export function SelectIcon({
       </PopoverTrigger>
 
       <PopoverContent
-        className="z-[9999] p-0 w-[220px] max-h-[300px] overflow-auto pointer-events-auto"
+        style={{ overscrollBehavior: 'contain' }}
+        className="z-[9999] p-0 w-[220px] max-h-[300px] overflow-auto touch-auto pointer-events-auto"
         forceMount
+        asChild={false}
       >
         <Command defaultValue={defaultValue}>
           <CommandInput
             placeholder="Buscar ícone..."
+            value={searchQuery}
             onValueChange={setSearchQuery}
           />
           <CommandEmpty>Nenhum ícone encontrado.</CommandEmpty>
@@ -78,9 +72,10 @@ export function SelectIcon({
             <div
               ref={listRef}
               onScroll={handleScroll}
+              onWheel={e => e.stopPropagation()}
               className="max-h-[200px] overflow-y-auto pointer-events-auto"
             >
-              {visibleIcons.map(name => (
+              {visibleItems.map(name => (
                 <CommandItem
                   key={name}
                   value={name}
@@ -89,9 +84,15 @@ export function SelectIcon({
                     setOpen(false)
                   }}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 w-full">
                     <DynamicIcon name={name} height={20} width={20} />
                     <span className="capitalize">{name}</span>
+                    {value === name && (
+                      <CheckIcon
+                        className="ml-auto w-4 h-4 text-primary"
+                        aria-hidden="true"
+                      />
+                    )}
                   </div>
                 </CommandItem>
               ))}

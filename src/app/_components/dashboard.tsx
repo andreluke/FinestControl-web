@@ -2,22 +2,23 @@ import { TransactionChart } from '@/components/charts/TransactionChart'
 import { CreateTransactionDialog } from '@/components/dialogs/createTransactionDialog'
 import { TransactionsTable } from '@/components/tables/TransactionTable'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { getFilteredTransactions } from '@/helpers/chartHelpers'
+import { getChartData, getFilteredTransactions } from '@/helpers/chartHelpers'
 import { mapTransactionsToTableProps } from '@/helpers/mappers'
 import {
   useGetAllTransactions,
   useGetAllTransactionsWithMonth,
-  useGetLastAmount,
+  useGetRoughAmount,
 } from '@/http/api'
+import NumberFlow from '@number-flow/react'
 import { Historic, HistoricWrapper } from './ui/historic'
 
 export default function Dashboard() {
   const { data: transactionsData } = useGetAllTransactions({ limit: '10' })
-  const { data: amountData } = useGetLastAmount()
+  const { data: amountData } = useGetRoughAmount()
   const { data: monthTransactionData } = useGetAllTransactionsWithMonth()
 
-  const treatedMonthTransactionData = getFilteredTransactions(
-    monthTransactionData ?? {}
+  const chartData = getChartData(
+    getFilteredTransactions(monthTransactionData ?? {})
   )
 
   const transactions = mapTransactionsToTableProps(
@@ -35,7 +36,7 @@ export default function Dashboard() {
       <div className="flex lg:flex-row flex-col justify-center md:justify-between gap-8 mt-4 w-full">
         <Card className="flex p-4 w-full lg:w-1/2 h-80">
           <CardHeader>Gráfico de despesas</CardHeader>
-          <TransactionChart transactions={treatedMonthTransactionData} />
+          <TransactionChart chartData={chartData} />
         </Card>
         <Card className="flex p-4 w-full lg:w-1/2 h-80 ga-2">
           <CardHeader>Histórico de transações</CardHeader>
@@ -53,31 +54,31 @@ export default function Dashboard() {
         </Card>
       </div>
       <div className="flex lg:flex-row flex-col justify-center gap-8 mt-4 w-full">
-        <Card className="flex gap-2 w-full sm:w-1/2 lg:w-1/5 h-md">
-          <CardHeader>Total armazenado</CardHeader>
-          <CardContent className="font-bold text-dark-100 text-2xl">
-            {`R$ ${((amountData?.total ?? 0) / 100).toLocaleString('pt-BR', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`}
+        <Card className="flex gap-2 w-auto min-w-1/5 h-md">
+          <CardHeader>Saldo</CardHeader>
+          <CardContent>
+            <NumberFlow
+              value={amountData ?? 0}
+              locales="pt-BR"
+              format={{ style: 'currency', currency: 'BRL' }}
+              className="font-bold text-dark-100 text-2xl"
+            />
           </CardContent>
         </Card>
-        <Card className="flex gap-2 w-full sm:w-1/2 lg:w-1/5 h-md">
-          <CardHeader>Total despesas</CardHeader>
-          <CardContent className="font-bold text-dark-100 text-2xl">
-            R$ 1.000,00
+        <Card className="flex gap-2 w-auto min-w-1/5 h-md">
+          <CardHeader>Despesas do mês</CardHeader>
+          <CardContent>
+            <NumberFlow
+              value={chartData[0]?.spend ?? 0}
+              locales="pt-BR"
+              format={{ style: 'currency', currency: 'BRL' }}
+              className="font-bold text-dark-100 text-2xl"
+            />
           </CardContent>
         </Card>
-        {/* <Card className="flex gap-2 w-full sm:w-1/2 lg:w-1/5 h-md">
-          <CardHeader>Cartão de crédito</CardHeader>
-          <CardContent className="font-bold text-dark-100 text-2xl">
-            R$ 1.000,00
-          </CardContent>
-        </Card> */}
       </div>
       <div className="my-2 mt-4 w-full">
         <Card className="p-4 w-full h-60">
-          <CreateTransactionDialog />
           <TransactionsTable transactions={transactions} />
         </Card>
       </div>

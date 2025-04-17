@@ -1,5 +1,5 @@
-import type { TransactionDataType } from '@/helpers/chartHelpers'
+import type { ChartEntry } from '@/helpers/chartHelpers'
 
 export interface TransactionChartProps {
-  transactions: TransactionDataType
+  chartData: ChartEntry[]
 }

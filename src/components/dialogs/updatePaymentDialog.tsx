@@ -30,7 +30,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { useQueryClient } from '@tanstack/react-query'
-import { SelectIcon } from '../SelectIcon'
+import { toast } from 'sonner'
+import { RemovePaymentAlert } from '../alerts/removePaymentAlert'
+import { SelectIcon } from '../selects/SelectIcon'
 import { Input } from '../ui/input'
 import { updatePaymentOnSuccess } from './api/updatePaymentQuery'
 import { ErrorAlertDialog } from './errorDialog'
@@ -76,7 +78,10 @@ export function UpdatePaymentDialog({
     mutation: {
       onSuccess: updatePayment => {
         updatePaymentOnSuccess(updatePayment, queryClient)
-
+        toast.success('Sua forma de pagamento foi atualizada com sucesso!', {
+          description: 'Suas transações já receberam a atualização.',
+        })
+        reset()
         closeRef.current?.click()
       },
       onError: () => {
@@ -157,9 +162,14 @@ export function UpdatePaymentDialog({
               />
 
               <DialogFooter>
+                <RemovePaymentAlert
+                  id={payment?.id.toString() ?? ''}
+                  onSuccessClose={onClose}
+                />
                 <Button type="submit" className="cursor-pointer">
-                  Atualizar forma de pagamento
+                  Atualizar
                 </Button>
+
                 <DialogClose ref={closeRef} className="hidden" />
               </DialogFooter>
             </form>

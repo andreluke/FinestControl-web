@@ -33,6 +33,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { createTagOnSuccess } from './api/createTagQuery'
 
 export function CreateTagDialog() {
@@ -55,6 +56,10 @@ export function CreateTagDialog() {
     mutation: {
       onSuccess: newTag => {
         createTagOnSuccess(newTag, queryClient)
+        toast.success('Sua tag foi criada com sucesso!', {
+          description: 'Agora você pode usar ela em suas transações.',
+        })
+        form.reset()
         closeRef.current?.click()
       },
       onError: () => {

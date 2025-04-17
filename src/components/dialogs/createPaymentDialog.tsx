@@ -6,7 +6,7 @@ import { Plus } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { SelectIcon } from '@/components/SelectIcon'
+import { SelectIcon } from '@/components/selects/SelectIcon'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,11 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ErrorAlertDialog } from './errorDialog'
 
-import {
-  type GetAllPaymentTypes200PaymentTypesItem,
-  getGetAllPaymentTypesQueryKey,
-  useCreatePaymentType,
-} from '@/http/api'
+import { useCreatePaymentType } from '@/http/api'
 import {
   type createPaymentData,
   createPaymentSchema,
@@ -40,6 +36,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import type { IconName } from 'lucide-react/dynamic'
+import { toast } from 'sonner'
 import { createPaymentOnSuccess } from './api/createPaymentQuery'
 
 export function CreatePaymentDialog() {
@@ -60,7 +57,10 @@ export function CreatePaymentDialog() {
     mutation: {
       onSuccess: newPayment => {
         createPaymentOnSuccess(newPayment, queryClient)
-
+        toast.success('Sua forma de pagamento foi criada com sucesso!', {
+          description: 'Agora você pode usar ela em suas transações.',
+        })
+        form.reset()
         closeRef.current?.click()
       },
       onError: () => {

@@ -28,8 +28,8 @@ import {
 } from '@/components/ui/form'
 
 import { CurrencyInput } from '../CurrencyInput'
-import { SelectPayment } from '../select/SelectPayment'
-import { SelectTag } from '../select/SelectTag'
+import { SelectPayment } from '../selects/SelectPayment'
+import { SelectTag } from '../selects/SelectTag'
 import { ErrorAlertDialog } from './errorDialog'
 
 import { useCreateTransaction } from '@/http/api'
@@ -38,6 +38,7 @@ import {
   createTransactionSchema,
 } from '@/schemas/transactionSchema'
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { createTransactionOnSuccess } from './api/createTransactionQuery'
 
 export function CreateTransactionDialog() {
@@ -46,7 +47,7 @@ export function CreateTransactionDialog() {
   const form = useForm<createTransactionData>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {
-      amount: '',
+      amount: 0,
       isSpend: true,
       tagId: '',
       paymentTypeId: '',
@@ -61,6 +62,10 @@ export function CreateTransactionDialog() {
     mutation: {
       onSuccess: newTransaction => {
         createTransactionOnSuccess(newTransaction, queryClient)
+        toast.success('Sua transação foi criado com sucesso!', {
+          description: 'Seu saldo já foi alterado.',
+        })
+        form.reset()
         closeRef.current?.click()
       },
       onError: () => {
@@ -70,11 +75,9 @@ export function CreateTransactionDialog() {
   })
 
   const onSubmit = (data: createTransactionData) => {
-    const amount = Number(data.amount.replace(/\D/g, ''))
     createTransaction({
       data: {
         ...data,
-        amount,
         tagId: Number(data.tagId),
         paymentTypeId: Number(data.paymentTypeId),
       },
@@ -111,7 +114,13 @@ export function CreateTransactionDialog() {
                   <FormItem>
                     <FormLabel>Valor</FormLabel>
                     <FormControl>
-                      <CurrencyInput {...field} />
+                      <CurrencyInput
+                        value={Number(field.value) || 0}
+                        onChange={val => field.onChange(val)}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        id={field.name}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -169,7 +178,9 @@ export function CreateTransactionDialog() {
               />
 
               <DialogFooter>
-                <Button type="submit">Salvar alterações</Button>
+                <Button type="submit" className="cursor-pointer">
+                  Salvar alterações
+                </Button>
                 <DialogClose ref={closeRef} className="hidden" />
               </DialogFooter>
             </form>

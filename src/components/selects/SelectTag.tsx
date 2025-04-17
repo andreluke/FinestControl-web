@@ -23,7 +23,7 @@ export function SelectTag({ value, onChange }: SelectTagProps) {
 
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="col-span-3">
+      <SelectTrigger className="col-span-3 cursor-pointer">
         <SelectValue placeholder="Selecione uma tag" />
       </SelectTrigger>
       <SelectContent>

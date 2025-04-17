@@ -27,7 +27,7 @@ export function SelectPayment({
 
   return (
     <Select defaultValue={selected} value={value} onValueChange={onChange}>
-      <SelectTrigger className="col-span-3">
+      <SelectTrigger className="col-span-3 cursor-pointer">
         <SelectValue placeholder="Selecione uma forma de pagamento" />
       </SelectTrigger>
       <SelectContent>

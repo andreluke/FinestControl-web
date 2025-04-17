@@ -30,6 +30,8 @@ import { TagPopover } from '../TagPopover'
 import { Input } from '../ui/input'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import { RemoveTagAlert } from '../alerts/removeTagAlert'
 import { updateTagOnSuccess } from './api/updateTagQuery'
 import { ErrorAlertDialog } from './errorDialog'
 
@@ -72,7 +74,10 @@ export function UpdateTagDialog({ tag, onClose }: UpdateTagDialogProps) {
     mutation: {
       onSuccess: updateTag => {
         updateTagOnSuccess(updateTag, queryClient)
-
+        toast.success('Sua tag foi atualizada com sucesso!', {
+          description: 'Suas transações já receberam a atualização.',
+        })
+        form.reset()
         closeRef.current?.click()
       },
       onError: () => {
@@ -151,8 +156,12 @@ export function UpdateTagDialog({ tag, onClose }: UpdateTagDialogProps) {
               />
 
               <DialogFooter>
+                <RemoveTagAlert
+                  id={tag?.id.toString() ?? ''}
+                  onSuccessClose={onClose}
+                />
                 <Button type="submit" className="cursor-pointer">
-                  Atualizar tag
+                  Atualizar
                 </Button>
                 <DialogClose ref={closeRef} className="hidden" />
               </DialogFooter>
