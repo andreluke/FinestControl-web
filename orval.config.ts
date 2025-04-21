@@ -2,14 +2,14 @@ import { defineConfig } from 'orval'
 
 export default defineConfig({
   api: {
-    input: 'http://localhost:3030/docs/json',
+    input: 'https://finestcontro.discloud.app/docs/json',
 
     output: {
       target: './src/http/api.ts',
       client: 'react-query',
       httpClient: 'fetch',
       clean: true,
-      baseUrl: 'http://localhost:3030',
+      baseUrl: 'https://finestcontro.discloud.app/docs',
 
       override: {
         fetch: {
