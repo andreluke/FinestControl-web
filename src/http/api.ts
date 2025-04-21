@@ -555,7 +555,7 @@ export type UpdateTagBody = {
   name?: string;
   color: string;
   description?: string;
-  monthGoal: number;
+  monthGoal?: number;
 };
 
 export type UpdateTag200 = {
