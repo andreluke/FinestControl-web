@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm install --legacy-peer-deps && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -59,8 +59,5 @@
     "orval": "^7.8.0",
     "tailwind-scrollbar": "^4.0.2",
     "typescript": "^5"
-  },
-  "resolutions": {
-    "date-fns": "^3.6.0"
   }
 }
