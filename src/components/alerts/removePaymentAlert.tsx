@@ -12,19 +12,23 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useRemovePaymentType } from '@/http/api'
 import { useQueryClient } from '@tanstack/react-query'
+import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
+import { DropdownMenuItem } from '../ui/dropdown-menu'
 import { removePaymentOnSuccess } from './api/removePaymentQuery'
 
 type RemovePaymentAlertProps = {
   id: string
   onSuccessClose?: () => void
+  asDropdownItem?: boolean
 }
 
 export function RemovePaymentAlert({
   id,
   onSuccessClose,
+  asDropdownItem,
 }: RemovePaymentAlertProps) {
   const [open, setOpen] = useState(false)
   const queryClient = useQueryClient()
@@ -49,13 +53,26 @@ export function RemovePaymentAlert({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button
-          type="button"
-          variant={'destructive'}
-          className="text-dark-500 cursor-pointer"
-        >
-          Remover
-        </Button>
+        {asDropdownItem ? (
+          <DropdownMenuItem
+            onSelect={e => {
+              e.preventDefault()
+              setOpen(true)
+            }}
+            className="cursor-pointer"
+          >
+            <Trash2 className="mr-2 w-4 h-4" />
+            Remover
+          </DropdownMenuItem>
+        ) : (
+          <Button
+            type="button"
+            variant="destructive"
+            className="text-dark-500 cursor-pointer"
+          >
+            Remover
+          </Button>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

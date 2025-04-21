@@ -25,13 +25,24 @@ export function Historic({ id, date, value, isSpend }: HistoricParams) {
   )
 }
 
-export function HistoricWrapper({ ...props }: HistoricWrapperParams) {
+export function HistoricWrapper({
+  transactions,
+  ...props
+}: HistoricWrapperParams) {
   return (
     <div
       {...props}
       className={'overflow-y-auto max-h-full space-y-3  scrollbar'}
     >
-      {props.children}
+      {transactions.map(item => (
+        <Historic
+          id={item.id}
+          date={item.createdAt}
+          value={item.value}
+          isSpend={item.isSpend}
+          key={item.id}
+        />
+      ))}
     </div>
   )
 }

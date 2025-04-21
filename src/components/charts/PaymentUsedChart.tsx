@@ -9,31 +9,41 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
+import type { GetMostUsedPaymentTypes200Item } from '@/http/api'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-export function SpendsChart({ chartData }: TransactionChartProps) {
+type MostUsedPaymentTypeChartProps = {
+  data: GetMostUsedPaymentTypes200Item[]
+}
+
+export function MostUsedPaymentTypeChart({
+  data,
+}: MostUsedPaymentTypeChartProps) {
   const chartConfig = {
-    spend: {
-      label: 'Spend',
-      color: '#9e6efe',
+    usageCount: {
+      label: 'usages',
+      color: '#A4F6C1',
     },
   } satisfies ChartConfig
 
   return (
     <ChartContainer config={chartConfig} className="w-full min-h-[200px]">
-      <BarChart accessibilityLayer data={chartData}>
+      <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="month"
+          dataKey="name"
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={value => value.slice(0, 3)}
+          tickFormatter={value => {
+            const words = value.split(' ') as string
+            return words[words.length - 1]
+          }}
         />
         <YAxis allowDecimals={false} />
+
         <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={<ChartLegendContent />} />
-        <Bar dataKey="spend" fill="var(--color-spend)" radius={4} />
+        <Bar dataKey="usageCount" fill="var(--color-usageCount)" radius={4} />
       </BarChart>
     </ChartContainer>
   )

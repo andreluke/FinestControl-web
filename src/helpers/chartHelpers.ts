@@ -56,14 +56,20 @@ export type TransactionChartType =
   TransactionDataType[keyof TransactionDataType]
 
 export function getChartData(transactions: TransactionData): ChartEntry[] {
-  return Object.entries(transactions).map(([monthKey, data]) => {
-    const date = parse(monthKey, 'yyyy-MM', new Date())
-    const month = format(date, 'MMMM', { locale: ptBR })
+  return Object.entries(transactions)
+    .sort(([a], [b]) => {
+      const dateA = parse(a, 'yyyy-M', new Date())
+      const dateB = parse(b, 'yyyy-M', new Date())
+      return dateA.getTime() - dateB.getTime()
+    })
+    .map(([monthKey, data]) => {
+      const date = parse(monthKey, 'yyyy-MM', new Date())
+      const month = format(date, 'MMMM', { locale: ptBR })
 
-    return {
-      month: month.charAt(0).toUpperCase() + month.slice(1),
-      spend: data.details.totalSpends,
-      income: data.details.totalIncomes,
-    }
-  })
+      return {
+        month: month.charAt(0).toUpperCase() + month.slice(1),
+        spend: data.details.totalSpends / 100,
+        income: data.details.totalIncomes / 100,
+      }
+    })
 }

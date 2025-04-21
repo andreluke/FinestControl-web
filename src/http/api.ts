@@ -113,6 +113,7 @@ export type GetAllTransactionsByTag200TransactionsItem = {
   isSpend: boolean;
   amount: number;
   paymentType: string;
+  tagGoal: number;
   tagName: string;
   tagColor: string;
 };
@@ -244,6 +245,7 @@ export type CreateTransactionBody = {
   isSpend: boolean;
   paymentTypeId: number;
   tagId: number;
+  createdAt?: string;
 };
 
 export type CreateTransaction200 = {
@@ -367,6 +369,11 @@ export type GetAllTags200TagsItem = {
    * @nullable
    */
   description: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal: number;
   /** @nullable */
   createdAt: string | null;
   /** @nullable */
@@ -404,6 +411,11 @@ export type GetTag200 = {
    * @nullable
    */
   description: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal: number;
   /** @nullable */
   createdAt: string | null;
   /** @nullable */
@@ -437,6 +449,11 @@ export type GetAllRemovedTags200TagsItem = {
    * @nullable
    */
   description: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal: number;
   /** @nullable */
   createdAt: string | null;
   /** @nullable */
@@ -454,10 +471,50 @@ export type GetAllRemovedTags500 = {
   message: string;
 };
 
+export type GetMostUsedTagsParams = {
+limit?: string;
+};
+
+export type GetMostUsedTags200Item = {
+  id: number;
+  name: string;
+  color: string;
+  monthGoal: number;
+  usageCount: number;
+};
+
+export type GetMostUsedTags500 = {
+  name: string;
+  message: string;
+};
+
+export type GetAllTagsWithSpendsParams = {
+month: string;
+year?: string;
+};
+
+export type GetAllTagsWithSpends200Item = {
+  id: number;
+  name: string;
+  color: string;
+  monthGoal: number;
+  total: number;
+};
+
+export type GetAllTagsWithSpends500 = {
+  name: string;
+  message: string;
+};
+
+export type DownloadTagsWithSpendsParams = {
+year?: string;
+};
+
 export type CreateTagBody = {
   name: string;
   color: string;
   description?: string;
+  monthGoal?: number;
 };
 
 export type CreateTag201 = {
@@ -475,6 +532,11 @@ export type CreateTag201 = {
    * @nullable
    */
   description?: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal?: number;
   /** @nullable */
   createdAt?: string | null;
   /** @nullable */
@@ -491,8 +553,9 @@ export type CreateTag500 = {
 export type UpdateTagBody = {
   id: number;
   name?: string;
-  color?: string;
+  color: string;
   description?: string;
+  monthGoal: number;
 };
 
 export type UpdateTag200 = {
@@ -510,6 +573,11 @@ export type UpdateTag200 = {
    * @nullable
    */
   description?: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal?: number;
   /** @nullable */
   createdAt?: string | null;
   /** @nullable */
@@ -538,6 +606,11 @@ export type RemoveTag200 = {
    * @nullable
    */
   description?: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal?: number;
   /** @nullable */
   createdAt?: string | null;
   /** @nullable */
@@ -566,6 +639,11 @@ export type RestoreTag200 = {
    * @nullable
    */
   description?: string | null;
+  /**
+   * @minimum -2147483648
+   * @maximum 2147483647
+   */
+  monthGoal?: number;
   /** @nullable */
   createdAt?: string | null;
   /** @nullable */
@@ -644,6 +722,22 @@ export type GetPaymentType400 = {
 };
 
 export type GetPaymentType404 = {
+  name: string;
+  message: string;
+};
+
+export type GetMostUsedPaymentTypesParams = {
+limit?: string;
+};
+
+export type GetMostUsedPaymentTypes200Item = {
+  id: number;
+  name: string;
+  icon: string;
+  usageCount: number;
+};
+
+export type GetMostUsedPaymentTypes500 = {
   name: string;
   message: string;
 };
@@ -2058,6 +2152,315 @@ export function useGetAllRemovedTags<TData = Awaited<ReturnType<typeof getAllRem
 
 
 /**
+ * @summary Get most used tags
+ */
+export const getGetMostUsedTagsUrl = (params?: GetMostUsedTagsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:3030/tags/most-used?${stringifiedParams}` : `http://localhost:3030/tags/most-used`
+}
+
+export const getMostUsedTags = async (params?: GetMostUsedTagsParams, options?: RequestInit): Promise<GetMostUsedTags200Item[]> => {
+  
+  return http<GetMostUsedTags200Item[]>(getGetMostUsedTagsUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetMostUsedTagsQueryKey = (params?: GetMostUsedTagsParams,) => {
+    return [`http://localhost:3030/tags/most-used`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetMostUsedTagsQueryOptions = <TData = Awaited<ReturnType<typeof getMostUsedTags>>, TError = GetMostUsedTags500>(params?: GetMostUsedTagsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedTags>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMostUsedTagsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMostUsedTags>>> = ({ signal }) => getMostUsedTags(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMostUsedTags>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMostUsedTagsQueryResult = NonNullable<Awaited<ReturnType<typeof getMostUsedTags>>>
+export type GetMostUsedTagsQueryError = GetMostUsedTags500
+
+
+export function useGetMostUsedTags<TData = Awaited<ReturnType<typeof getMostUsedTags>>, TError = GetMostUsedTags500>(
+ params: undefined |  GetMostUsedTagsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedTags>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMostUsedTags>>,
+          TError,
+          Awaited<ReturnType<typeof getMostUsedTags>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMostUsedTags<TData = Awaited<ReturnType<typeof getMostUsedTags>>, TError = GetMostUsedTags500>(
+ params?: GetMostUsedTagsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedTags>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMostUsedTags>>,
+          TError,
+          Awaited<ReturnType<typeof getMostUsedTags>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMostUsedTags<TData = Awaited<ReturnType<typeof getMostUsedTags>>, TError = GetMostUsedTags500>(
+ params?: GetMostUsedTagsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedTags>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get most used tags
+ */
+
+export function useGetMostUsedTags<TData = Awaited<ReturnType<typeof getMostUsedTags>>, TError = GetMostUsedTags500>(
+ params?: GetMostUsedTagsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedTags>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMostUsedTagsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get all tags with their monthly goal and monthly total spent
+ */
+export const getGetAllTagsWithSpendsUrl = (params: GetAllTagsWithSpendsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:3030/tags/with-spends?${stringifiedParams}` : `http://localhost:3030/tags/with-spends`
+}
+
+export const getAllTagsWithSpends = async (params: GetAllTagsWithSpendsParams, options?: RequestInit): Promise<GetAllTagsWithSpends200Item[]> => {
+  
+  return http<GetAllTagsWithSpends200Item[]>(getGetAllTagsWithSpendsUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetAllTagsWithSpendsQueryKey = (params: GetAllTagsWithSpendsParams,) => {
+    return [`http://localhost:3030/tags/with-spends`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetAllTagsWithSpendsQueryOptions = <TData = Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError = GetAllTagsWithSpends500>(params: GetAllTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAllTagsWithSpendsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllTagsWithSpends>>> = ({ signal }) => getAllTagsWithSpends(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAllTagsWithSpendsQueryResult = NonNullable<Awaited<ReturnType<typeof getAllTagsWithSpends>>>
+export type GetAllTagsWithSpendsQueryError = GetAllTagsWithSpends500
+
+
+export function useGetAllTagsWithSpends<TData = Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError = GetAllTagsWithSpends500>(
+ params: GetAllTagsWithSpendsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAllTagsWithSpends>>,
+          TError,
+          Awaited<ReturnType<typeof getAllTagsWithSpends>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAllTagsWithSpends<TData = Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError = GetAllTagsWithSpends500>(
+ params: GetAllTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAllTagsWithSpends>>,
+          TError,
+          Awaited<ReturnType<typeof getAllTagsWithSpends>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAllTagsWithSpends<TData = Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError = GetAllTagsWithSpends500>(
+ params: GetAllTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get all tags with their monthly goal and monthly total spent
+ */
+
+export function useGetAllTagsWithSpends<TData = Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError = GetAllTagsWithSpends500>(
+ params: GetAllTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllTagsWithSpends>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAllTagsWithSpendsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Exporta os gastos por tag até o mês atual como planilha Excel
+ */
+export const getDownloadTagsWithSpendsUrl = (params?: DownloadTagsWithSpendsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:3030/tags/with-spends/download?${stringifiedParams}` : `http://localhost:3030/tags/with-spends/download`
+}
+
+export const downloadTagsWithSpends = async (params?: DownloadTagsWithSpendsParams, options?: RequestInit): Promise<void> => {
+  
+  return http<void>(getDownloadTagsWithSpendsUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getDownloadTagsWithSpendsQueryKey = (params?: DownloadTagsWithSpendsParams,) => {
+    return [`http://localhost:3030/tags/with-spends/download`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getDownloadTagsWithSpendsQueryOptions = <TData = Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError = unknown>(params?: DownloadTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDownloadTagsWithSpendsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadTagsWithSpends>>> = ({ signal }) => downloadTagsWithSpends(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type DownloadTagsWithSpendsQueryResult = NonNullable<Awaited<ReturnType<typeof downloadTagsWithSpends>>>
+export type DownloadTagsWithSpendsQueryError = unknown
+
+
+export function useDownloadTagsWithSpends<TData = Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError = unknown>(
+ params: undefined |  DownloadTagsWithSpendsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof downloadTagsWithSpends>>,
+          TError,
+          Awaited<ReturnType<typeof downloadTagsWithSpends>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDownloadTagsWithSpends<TData = Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError = unknown>(
+ params?: DownloadTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof downloadTagsWithSpends>>,
+          TError,
+          Awaited<ReturnType<typeof downloadTagsWithSpends>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useDownloadTagsWithSpends<TData = Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError = unknown>(
+ params?: DownloadTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Exporta os gastos por tag até o mês atual como planilha Excel
+ */
+
+export function useDownloadTagsWithSpends<TData = Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError = unknown>(
+ params?: DownloadTagsWithSpendsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof downloadTagsWithSpends>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getDownloadTagsWithSpendsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * @summary Create tag
  */
 export const getCreateTagUrl = () => {
@@ -2627,6 +3030,109 @@ export function useGetPaymentType<TData = Awaited<ReturnType<typeof getPaymentTy
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetPaymentTypeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get most used payment types
+ */
+export const getGetMostUsedPaymentTypesUrl = (params?: GetMostUsedPaymentTypesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:3030/payment-type/most-used?${stringifiedParams}` : `http://localhost:3030/payment-type/most-used`
+}
+
+export const getMostUsedPaymentTypes = async (params?: GetMostUsedPaymentTypesParams, options?: RequestInit): Promise<GetMostUsedPaymentTypes200Item[]> => {
+  
+  return http<GetMostUsedPaymentTypes200Item[]>(getGetMostUsedPaymentTypesUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetMostUsedPaymentTypesQueryKey = (params?: GetMostUsedPaymentTypesParams,) => {
+    return [`http://localhost:3030/payment-type/most-used`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetMostUsedPaymentTypesQueryOptions = <TData = Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError = GetMostUsedPaymentTypes500>(params?: GetMostUsedPaymentTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMostUsedPaymentTypesQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>> = ({ signal }) => getMostUsedPaymentTypes(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetMostUsedPaymentTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>>
+export type GetMostUsedPaymentTypesQueryError = GetMostUsedPaymentTypes500
+
+
+export function useGetMostUsedPaymentTypes<TData = Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError = GetMostUsedPaymentTypes500>(
+ params: undefined |  GetMostUsedPaymentTypesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMostUsedPaymentTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getMostUsedPaymentTypes>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMostUsedPaymentTypes<TData = Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError = GetMostUsedPaymentTypes500>(
+ params?: GetMostUsedPaymentTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMostUsedPaymentTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getMostUsedPaymentTypes>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMostUsedPaymentTypes<TData = Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError = GetMostUsedPaymentTypes500>(
+ params?: GetMostUsedPaymentTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get most used payment types
+ */
+
+export function useGetMostUsedPaymentTypes<TData = Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError = GetMostUsedPaymentTypes500>(
+ params?: GetMostUsedPaymentTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMostUsedPaymentTypes>>, TError, TData>>, request?: SecondParameter<typeof http>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetMostUsedPaymentTypesQueryOptions(params,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

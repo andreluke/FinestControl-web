@@ -12,4 +12,5 @@ import type { ComponentProps } from 'react'
 
 export interface TransactionsTableProps extends ComponentProps<'div'> {
   transactions: TransactionTableProps[]
+  pagination?: boolean
 }

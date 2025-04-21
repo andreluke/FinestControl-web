@@ -1,7 +1,7 @@
+import { CurrencyCard } from '@/components/CurrencyCard'
 import { TransactionChart } from '@/components/charts/TransactionChart'
-import { CreateTransactionDialog } from '@/components/dialogs/createTransactionDialog'
 import { TransactionsTable } from '@/components/tables/TransactionTable'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardHeader } from '@/components/ui/card'
 import { getChartData, getFilteredTransactions } from '@/helpers/chartHelpers'
 import { mapTransactionsToTableProps } from '@/helpers/mappers'
 import {
@@ -9,13 +9,14 @@ import {
   useGetAllTransactionsWithMonth,
   useGetRoughAmount,
 } from '@/http/api'
-import NumberFlow from '@number-flow/react'
-import { Historic, HistoricWrapper } from './ui/historic'
+import { HistoricWrapper } from './ui/historic'
 
 export default function Dashboard() {
   const { data: transactionsData } = useGetAllTransactions({ limit: '10' })
   const { data: amountData } = useGetRoughAmount()
   const { data: monthTransactionData } = useGetAllTransactionsWithMonth()
+
+  console.log(monthTransactionData)
 
   const chartData = getChartData(
     getFilteredTransactions(monthTransactionData ?? {})
@@ -40,45 +41,23 @@ export default function Dashboard() {
         </Card>
         <Card className="flex p-4 w-full lg:w-1/2 h-80 ga-2">
           <CardHeader>Histórico de transações</CardHeader>
-          <HistoricWrapper>
-            {transactions.map(item => (
-              <Historic
-                id={item.id}
-                date={item.createdAt}
-                value={item.value}
-                isSpend={item.isSpend}
-                key={item.id}
-              />
-            ))}
-          </HistoricWrapper>
+          <HistoricWrapper transactions={transactions} />
         </Card>
       </div>
       <div className="flex lg:flex-row flex-col justify-center gap-8 mt-4 w-full">
-        <Card className="flex gap-2 w-auto min-w-1/5 h-md">
-          <CardHeader>Saldo</CardHeader>
-          <CardContent>
-            <NumberFlow
-              value={amountData ?? 0}
-              locales="pt-BR"
-              format={{ style: 'currency', currency: 'BRL' }}
-              className="font-bold text-dark-100 text-2xl"
-            />
-          </CardContent>
-        </Card>
-        <Card className="flex gap-2 w-auto min-w-1/5 h-md">
-          <CardHeader>Despesas do mês</CardHeader>
-          <CardContent>
-            <NumberFlow
-              value={chartData[0]?.spend ?? 0}
-              locales="pt-BR"
-              format={{ style: 'currency', currency: 'BRL' }}
-              className="font-bold text-dark-100 text-2xl"
-            />
-          </CardContent>
-        </Card>
+        <CurrencyCard
+          variant="compact"
+          value={amountData ?? 0}
+          header="Saldo"
+        />
+        <CurrencyCard
+          variant="compact"
+          value={chartData[chartData.length - 1]?.spend ?? 0}
+          header="Despesas do mês"
+        />
       </div>
       <div className="my-2 mt-4 w-full">
-        <Card className="p-4 w-full h-60">
+        <Card className="p-4 w-full h-full">
           <TransactionsTable transactions={transactions} />
         </Card>
       </div>

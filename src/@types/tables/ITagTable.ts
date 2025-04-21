@@ -3,6 +3,7 @@ export interface TagTableProps {
   name: string
   description: string
   color: string
+  monthGoal: number
   createdAt: Date
   updatedAt: Date | null
 }

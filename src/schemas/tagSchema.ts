@@ -4,12 +4,14 @@ export const createTagSchema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
   description: z.string().min(1, { message: 'Descrição é obrigatória' }),
   color: z.string().min(1, { message: 'Cor é obrigatória' }),
+  monthGoal: z.number().optional(),
 })
 
 export const updateTagSchema = z.object({
   id: z.number().min(1, { message: 'ID é obrigatório' }),
   name: z.string().optional(),
-  color: z.string().optional(),
+  color: z.string(),
+  monthGoal: z.number().optional(),
   description: z.string().optional(),
 })
 

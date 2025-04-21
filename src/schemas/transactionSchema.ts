@@ -7,6 +7,7 @@ export const createTransactionSchema = z.object({
     .string()
     .min(1, { message: 'Tipo de pagamento é obrigatório' }),
   tagId: z.string().min(1, { message: 'Tag é obrigatória' }),
+  createdAt: z.string().optional(),
 })
 
 export type createTransactionData = z.infer<typeof createTransactionSchema>

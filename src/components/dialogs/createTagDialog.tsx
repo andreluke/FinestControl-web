@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/form'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { CurrencyInput } from '../CurrencyInput'
 import { createTagOnSuccess } from './api/createTagQuery'
 
 export function CreateTagDialog() {
@@ -125,17 +126,37 @@ export function CreateTagDialog() {
 
               <FormField
                 control={form.control}
+                name="monthGoal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta</FormLabel>
+                    <FormControl>
+                      <CurrencyInput
+                        value={Number(field.value) || 0}
+                        onChange={val => field.onChange(val)}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        id={field.name}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="color"
                 render={({ field }) => (
-                  <FormItem className="items-center gap-4 grid grid-cols-4">
-                    <FormLabel className="text-right">Cor</FormLabel>
-                    <FormControl className="col-span-3">
+                  <FormItem>
+                    <FormLabel>Cor</FormLabel>
+                    <FormControl>
                       <TagPopover
-                        selectedColor={field.value}
+                        selectedColor={field.value ?? ''}
                         onColorChange={field.onChange}
                       />
                     </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />

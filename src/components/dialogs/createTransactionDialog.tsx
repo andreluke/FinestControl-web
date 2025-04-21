@@ -39,6 +39,7 @@ import {
 } from '@/schemas/transactionSchema'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { DateTimePopoverField } from '../DateTimePopoverField'
 import { createTransactionOnSuccess } from './api/createTransactionQuery'
 
 export function CreateTransactionDialog() {
@@ -120,6 +121,7 @@ export function CreateTransactionDialog() {
                         onBlur={field.onBlur}
                         name={field.name}
                         id={field.name}
+                        aria-label="Valor"
                       />
                     </FormControl>
                     <FormMessage />
@@ -175,6 +177,12 @@ export function CreateTransactionDialog() {
                     <FormMessage />
                   </FormItem>
                 )}
+              />
+
+              <DateTimePopoverField
+                control={form.control}
+                name="createdAt"
+                label="Data e hora"
               />
 
               <DialogFooter>

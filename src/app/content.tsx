@@ -1,17 +1,20 @@
 'use client'
+
 import { useSidebarStore } from '@/stores/useSideBarStore'
 import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 import type { JSX } from 'react'
+import Loading from './loading'
 
 const Dashboard = dynamic(() => import('./_components/dashboard'), {
-  ssr: false,
+  ssr: true,
 })
-const Transacao = dynamic(() => import('./_components/transacao'), {
-  ssr: false,
+const Transacao = dynamic(() => import('./_components/transactions'), {
+  ssr: true,
 })
-const Tags = dynamic(() => import('./_components/tags'), { ssr: false })
-const Pagamento = dynamic(() => import('./_components/pagamento'), {
-  ssr: false,
+const Tags = dynamic(() => import('./_components/tags'), { ssr: true })
+const Pagamento = dynamic(() => import('./_components/payments'), {
+  ssr: true,
 })
 
 const componentMap: Record<string, JSX.Element> = {
@@ -23,5 +26,10 @@ const componentMap: Record<string, JSX.Element> = {
 
 export default function Content() {
   const active = useSidebarStore(state => state.active)
-  return componentMap[active] ?? <div>Página não encontrada</div>
+
+  return (
+    <Suspense fallback={<Loading />}>
+      {componentMap[active] ?? <div className="p-4">Página não encontrada</div>}
+    </Suspense>
+  )
 }

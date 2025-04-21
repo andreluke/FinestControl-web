@@ -31,6 +31,7 @@ import { Input } from '../ui/input'
 
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { CurrencyInput } from '../CurrencyInput'
 import { RemoveTagAlert } from '../alerts/removeTagAlert'
 import { updateTagOnSuccess } from './api/updateTagQuery'
 import { ErrorAlertDialog } from './errorDialog'
@@ -50,6 +51,7 @@ export function UpdateTagDialog({ tag, onClose }: UpdateTagDialogProps) {
       name: tag?.name,
       description: tag?.description,
       color: tag?.color,
+      monthGoal: (tag?.monthGoal ?? 0) / 100,
     },
   })
 
@@ -62,6 +64,7 @@ export function UpdateTagDialog({ tag, onClose }: UpdateTagDialogProps) {
         name: tag.name,
         description: tag.description,
         color: tag.color,
+        monthGoal: tag.monthGoal / 100,
       })
     }
   }, [tag, reset])
@@ -132,6 +135,26 @@ export function UpdateTagDialog({ tag, onClose }: UpdateTagDialogProps) {
                     <FormLabel>Descrição</FormLabel>
                     <FormControl>
                       <Input placeholder="Descrição" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="monthGoal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta</FormLabel>
+                    <FormControl>
+                      <CurrencyInput
+                        value={Number(field.value) || 0}
+                        onChange={val => field.onChange(val)}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        id={field.name}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

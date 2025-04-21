@@ -30,6 +30,7 @@ export function mapTagsToTableProps(
     color: item.color,
     createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
     updatedAt: item.updatedAt ? new Date(item.updatedAt) : null,
+    monthGoal: item.monthGoal,
   }))
 }
 

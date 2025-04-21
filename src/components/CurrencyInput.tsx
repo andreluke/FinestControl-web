@@ -22,6 +22,7 @@ export function CurrencyInput({
 }: CurrencyInputProps) {
   return (
     <NumberField
+      aria-label="Valor"
       value={value}
       onChange={onChange}
       onBlur={onBlur}
@@ -31,6 +32,7 @@ export function CurrencyInput({
         currencySign: 'accounting',
       }}
     >
+      <Label className="sr-only">Valor</Label>
       <div className="*:not-first:mt-2">
         <Group className="inline-flex relative items-center shadow-xs border border-input rounded-md outline-none w-full h-9 overflow-hidden text-sm transition">
           <Input

@@ -1,6 +1,9 @@
 import type { TagTableProps, TagsTableProps } from '@/@types/tables/ITagTable'
+import { Button } from '@/components/ui/button'
 import React from 'react'
+import { RemoveTagAlert } from '../alerts/removeTagAlert'
 import { CreateTagDialog } from '../dialogs/createTagDialog'
+import { ListRemovedTagsDialog } from '../dialogs/listRemovedTagsDialog'
 import { UpdateTagDialog } from '../dialogs/updateTagDialog'
 import { tagColumns } from './columns'
 import { DataTable } from './ui/data-table'
@@ -10,6 +13,18 @@ export function TagsTable({ tags, ...props }: TagsTableProps) {
     null
   )
 
+  const onEdit = (tag: TagTableProps) => {
+    setSelectedTag(tag)
+  }
+
+  const deleteTrigger = (tag: TagTableProps) => (
+    <RemoveTagAlert
+      id={tag.id.toString()}
+      onSuccessClose={() => {}}
+      asDropdownItem
+    />
+  )
+
   return (
     <>
       <div
@@ -17,11 +32,17 @@ export function TagsTable({ tags, ...props }: TagsTableProps) {
         {...props}
       >
         <DataTable
-          columns={tagColumns}
+          columns={tagColumns({ onEdit, deleteTrigger })}
           data={tags}
-          onRowClick={setSelectedTag}
-          actionSlot={<CreateTagDialog />}
+          actionSlot={
+            <>
+              <CreateTagDialog />
+              <ListRemovedTagsDialog />
+            </>
+          }
           searchFields={['id', 'name', 'color', 'createdAt', 'updatedAt']}
+          searchPlaceholder="Filtrar tags..."
+          tableName="Tags"
         />
       </div>
       <UpdateTagDialog tag={selectedTag} onClose={() => setSelectedTag(null)} />
