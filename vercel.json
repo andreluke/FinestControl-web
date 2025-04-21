@@ -5,12 +5,5 @@
       "src": "next.config.js",
       "use": "@vercel/next"
     }
-  ],
-  "buildCommand": "npm install --legacy-peer-deps && npm run build",
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/"
-    }
   ]
 }
