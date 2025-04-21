@@ -886,7 +886,7 @@ export const getGetAllTransactionsUrl = (params?: GetAllTransactionsParams,) => 
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/transactions/all?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/transactions/all`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/transactions/all?${stringifiedParams}` : `https://finestcontro.discloud.app/transactions/all`
 }
 
 export const getAllTransactions = async (params?: GetAllTransactionsParams, options?: RequestInit): Promise<GetAllTransactions200> => {
@@ -903,7 +903,7 @@ export const getAllTransactions = async (params?: GetAllTransactionsParams, opti
 
 
 export const getGetAllTransactionsQueryKey = (params?: GetAllTransactionsParams,) => {
-    return [`https://finestcontro.discloud.app/docs/transactions/all`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/transactions/all`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -989,7 +989,7 @@ export const getGetTransactionByIdUrl = (params: GetTransactionByIdParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/transactions?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/transactions`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/transactions?${stringifiedParams}` : `https://finestcontro.discloud.app/transactions`
 }
 
 export const getTransactionById = async (params: GetTransactionByIdParams, options?: RequestInit): Promise<GetTransactionById200> => {
@@ -1006,7 +1006,7 @@ export const getTransactionById = async (params: GetTransactionByIdParams, optio
 
 
 export const getGetTransactionByIdQueryKey = (params: GetTransactionByIdParams,) => {
-    return [`https://finestcontro.discloud.app/docs/transactions`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/transactions`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1092,7 +1092,7 @@ export const getGetAllTransactionsByPaymentTypeUrl = (params: GetAllTransactions
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/transactions/payment-type?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/transactions/payment-type`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/transactions/payment-type?${stringifiedParams}` : `https://finestcontro.discloud.app/transactions/payment-type`
 }
 
 export const getAllTransactionsByPaymentType = async (params: GetAllTransactionsByPaymentTypeParams, options?: RequestInit): Promise<GetAllTransactionsByPaymentType200> => {
@@ -1109,7 +1109,7 @@ export const getAllTransactionsByPaymentType = async (params: GetAllTransactions
 
 
 export const getGetAllTransactionsByPaymentTypeQueryKey = (params: GetAllTransactionsByPaymentTypeParams,) => {
-    return [`https://finestcontro.discloud.app/docs/transactions/payment-type`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/transactions/payment-type`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1195,7 +1195,7 @@ export const getGetAllTransactionsByTagUrl = (params: GetAllTransactionsByTagPar
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/transactions/tag?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/transactions/tag`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/transactions/tag?${stringifiedParams}` : `https://finestcontro.discloud.app/transactions/tag`
 }
 
 export const getAllTransactionsByTag = async (params: GetAllTransactionsByTagParams, options?: RequestInit): Promise<GetAllTransactionsByTag200> => {
@@ -1212,7 +1212,7 @@ export const getAllTransactionsByTag = async (params: GetAllTransactionsByTagPar
 
 
 export const getGetAllTransactionsByTagQueryKey = (params: GetAllTransactionsByTagParams,) => {
-    return [`https://finestcontro.discloud.app/docs/transactions/tag`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/transactions/tag`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1298,7 +1298,7 @@ export const getGetAllTransactionsByMonthUrl = (params: GetAllTransactionsByMont
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/transactions/month?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/transactions/month`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/transactions/month?${stringifiedParams}` : `https://finestcontro.discloud.app/transactions/month`
 }
 
 export const getAllTransactionsByMonth = async (params: GetAllTransactionsByMonthParams, options?: RequestInit): Promise<GetAllTransactionsByMonth200> => {
@@ -1315,7 +1315,7 @@ export const getAllTransactionsByMonth = async (params: GetAllTransactionsByMont
 
 
 export const getGetAllTransactionsByMonthQueryKey = (params: GetAllTransactionsByMonthParams,) => {
-    return [`https://finestcontro.discloud.app/docs/transactions/month`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/transactions/month`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1401,7 +1401,7 @@ export const getGetAllTransactionsWithMonthUrl = (params?: GetAllTransactionsWit
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/transactions/with-month?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/transactions/with-month`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/transactions/with-month?${stringifiedParams}` : `https://finestcontro.discloud.app/transactions/with-month`
 }
 
 export const getAllTransactionsWithMonth = async (params?: GetAllTransactionsWithMonthParams, options?: RequestInit): Promise<GetAllTransactionsWithMonth200> => {
@@ -1418,7 +1418,7 @@ export const getAllTransactionsWithMonth = async (params?: GetAllTransactionsWit
 
 
 export const getGetAllTransactionsWithMonthQueryKey = (params?: GetAllTransactionsWithMonthParams,) => {
-    return [`https://finestcontro.discloud.app/docs/transactions/with-month`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/transactions/with-month`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1497,7 +1497,7 @@ export const getCreateTransactionUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/transactions/create`
+  return `https://finestcontro.discloud.app/transactions/create`
 }
 
 export const createTransaction = async (createTransactionBody: CreateTransactionBody, options?: RequestInit): Promise<CreateTransaction200> => {
@@ -1569,7 +1569,7 @@ export const getGetLastAmountUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/total-amount/`
+  return `https://finestcontro.discloud.app/total-amount/`
 }
 
 export const getLastAmount = async ( options?: RequestInit): Promise<GetLastAmount200> => {
@@ -1586,7 +1586,7 @@ export const getLastAmount = async ( options?: RequestInit): Promise<GetLastAmou
 
 
 export const getGetLastAmountQueryKey = () => {
-    return [`https://finestcontro.discloud.app/docs/total-amount/`] as const;
+    return [`https://finestcontro.discloud.app/total-amount/`] as const;
     }
 
     
@@ -1672,7 +1672,7 @@ export const getGetMonthAmountUrl = (params: GetMonthAmountParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/total-amount/month?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/total-amount/month`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/total-amount/month?${stringifiedParams}` : `https://finestcontro.discloud.app/total-amount/month`
 }
 
 export const getMonthAmount = async (params: GetMonthAmountParams, options?: RequestInit): Promise<GetMonthAmount200Item[]> => {
@@ -1689,7 +1689,7 @@ export const getMonthAmount = async (params: GetMonthAmountParams, options?: Req
 
 
 export const getGetMonthAmountQueryKey = (params: GetMonthAmountParams,) => {
-    return [`https://finestcontro.discloud.app/docs/total-amount/month`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/total-amount/month`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -1768,7 +1768,7 @@ export const getGetRoughAmountUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/total-amount/number`
+  return `https://finestcontro.discloud.app/total-amount/number`
 }
 
 export const getRoughAmount = async ( options?: RequestInit): Promise<number> => {
@@ -1785,7 +1785,7 @@ export const getRoughAmount = async ( options?: RequestInit): Promise<number> =>
 
 
 export const getGetRoughAmountQueryKey = () => {
-    return [`https://finestcontro.discloud.app/docs/total-amount/number`] as const;
+    return [`https://finestcontro.discloud.app/total-amount/number`] as const;
     }
 
     
@@ -1864,7 +1864,7 @@ export const getGetAllTagsUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/tags/all`
+  return `https://finestcontro.discloud.app/tags/all`
 }
 
 export const getAllTags = async ( options?: RequestInit): Promise<GetAllTags200> => {
@@ -1881,7 +1881,7 @@ export const getAllTags = async ( options?: RequestInit): Promise<GetAllTags200>
 
 
 export const getGetAllTagsQueryKey = () => {
-    return [`https://finestcontro.discloud.app/docs/tags/all`] as const;
+    return [`https://finestcontro.discloud.app/tags/all`] as const;
     }
 
     
@@ -1967,7 +1967,7 @@ export const getGetTagUrl = (params?: GetTagParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/tags?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/tags`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/tags?${stringifiedParams}` : `https://finestcontro.discloud.app/tags`
 }
 
 export const getTag = async (params?: GetTagParams, options?: RequestInit): Promise<GetTag200> => {
@@ -1984,7 +1984,7 @@ export const getTag = async (params?: GetTagParams, options?: RequestInit): Prom
 
 
 export const getGetTagQueryKey = (params?: GetTagParams,) => {
-    return [`https://finestcontro.discloud.app/docs/tags`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/tags`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2063,7 +2063,7 @@ export const getGetAllRemovedTagsUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/tags/all-removed`
+  return `https://finestcontro.discloud.app/tags/all-removed`
 }
 
 export const getAllRemovedTags = async ( options?: RequestInit): Promise<GetAllRemovedTags200> => {
@@ -2080,7 +2080,7 @@ export const getAllRemovedTags = async ( options?: RequestInit): Promise<GetAllR
 
 
 export const getGetAllRemovedTagsQueryKey = () => {
-    return [`https://finestcontro.discloud.app/docs/tags/all-removed`] as const;
+    return [`https://finestcontro.discloud.app/tags/all-removed`] as const;
     }
 
     
@@ -2166,7 +2166,7 @@ export const getGetMostUsedTagsUrl = (params?: GetMostUsedTagsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/tags/most-used?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/tags/most-used`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/tags/most-used?${stringifiedParams}` : `https://finestcontro.discloud.app/tags/most-used`
 }
 
 export const getMostUsedTags = async (params?: GetMostUsedTagsParams, options?: RequestInit): Promise<GetMostUsedTags200Item[]> => {
@@ -2183,7 +2183,7 @@ export const getMostUsedTags = async (params?: GetMostUsedTagsParams, options?: 
 
 
 export const getGetMostUsedTagsQueryKey = (params?: GetMostUsedTagsParams,) => {
-    return [`https://finestcontro.discloud.app/docs/tags/most-used`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/tags/most-used`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2269,7 +2269,7 @@ export const getGetAllTagsWithSpendsUrl = (params: GetAllTagsWithSpendsParams,) 
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/tags/with-spends?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/tags/with-spends`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/tags/with-spends?${stringifiedParams}` : `https://finestcontro.discloud.app/tags/with-spends`
 }
 
 export const getAllTagsWithSpends = async (params: GetAllTagsWithSpendsParams, options?: RequestInit): Promise<GetAllTagsWithSpends200Item[]> => {
@@ -2286,7 +2286,7 @@ export const getAllTagsWithSpends = async (params: GetAllTagsWithSpendsParams, o
 
 
 export const getGetAllTagsWithSpendsQueryKey = (params: GetAllTagsWithSpendsParams,) => {
-    return [`https://finestcontro.discloud.app/docs/tags/with-spends`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/tags/with-spends`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2372,7 +2372,7 @@ export const getDownloadTagsWithSpendsUrl = (params?: DownloadTagsWithSpendsPara
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/tags/with-spends/download?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/tags/with-spends/download`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/tags/with-spends/download?${stringifiedParams}` : `https://finestcontro.discloud.app/tags/with-spends/download`
 }
 
 export const downloadTagsWithSpends = async (params?: DownloadTagsWithSpendsParams, options?: RequestInit): Promise<void> => {
@@ -2389,7 +2389,7 @@ export const downloadTagsWithSpends = async (params?: DownloadTagsWithSpendsPara
 
 
 export const getDownloadTagsWithSpendsQueryKey = (params?: DownloadTagsWithSpendsParams,) => {
-    return [`https://finestcontro.discloud.app/docs/tags/with-spends/download`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/tags/with-spends/download`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -2468,7 +2468,7 @@ export const getCreateTagUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/tags/create`
+  return `https://finestcontro.discloud.app/tags/create`
 }
 
 export const createTag = async (createTagBody: CreateTagBody, options?: RequestInit): Promise<CreateTag201> => {
@@ -2540,7 +2540,7 @@ export const getUpdateTagUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/tags/update`
+  return `https://finestcontro.discloud.app/tags/update`
 }
 
 export const updateTag = async (updateTagBody: UpdateTagBody, options?: RequestInit): Promise<UpdateTag200> => {
@@ -2612,7 +2612,7 @@ export const getRemoveTagUrl = (id: string,) => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/tags/remove/${id}`
+  return `https://finestcontro.discloud.app/tags/remove/${id}`
 }
 
 export const removeTag = async (id: string, options?: RequestInit): Promise<RemoveTag200> => {
@@ -2683,7 +2683,7 @@ export const getRestoreTagUrl = (id: string,) => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/tags/restore/${id}`
+  return `https://finestcontro.discloud.app/tags/restore/${id}`
 }
 
 export const restoreTag = async (id: string, options?: RequestInit): Promise<RestoreTag200> => {
@@ -2754,7 +2754,7 @@ export const getGetAllPaymentTypesUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/payment-type/all`
+  return `https://finestcontro.discloud.app/payment-type/all`
 }
 
 export const getAllPaymentTypes = async ( options?: RequestInit): Promise<GetAllPaymentTypes200> => {
@@ -2771,7 +2771,7 @@ export const getAllPaymentTypes = async ( options?: RequestInit): Promise<GetAll
 
 
 export const getGetAllPaymentTypesQueryKey = () => {
-    return [`https://finestcontro.discloud.app/docs/payment-type/all`] as const;
+    return [`https://finestcontro.discloud.app/payment-type/all`] as const;
     }
 
     
@@ -2850,7 +2850,7 @@ export const getGetAllRemovedPaymentTypesUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/payment-type/all-removed`
+  return `https://finestcontro.discloud.app/payment-type/all-removed`
 }
 
 export const getAllRemovedPaymentTypes = async ( options?: RequestInit): Promise<GetAllRemovedPaymentTypes200> => {
@@ -2867,7 +2867,7 @@ export const getAllRemovedPaymentTypes = async ( options?: RequestInit): Promise
 
 
 export const getGetAllRemovedPaymentTypesQueryKey = () => {
-    return [`https://finestcontro.discloud.app/docs/payment-type/all-removed`] as const;
+    return [`https://finestcontro.discloud.app/payment-type/all-removed`] as const;
     }
 
     
@@ -2953,7 +2953,7 @@ export const getGetPaymentTypeUrl = (params?: GetPaymentTypeParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/payment-type?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/payment-type`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/payment-type?${stringifiedParams}` : `https://finestcontro.discloud.app/payment-type`
 }
 
 export const getPaymentType = async (params?: GetPaymentTypeParams, options?: RequestInit): Promise<GetPaymentType200> => {
@@ -2970,7 +2970,7 @@ export const getPaymentType = async (params?: GetPaymentTypeParams, options?: Re
 
 
 export const getGetPaymentTypeQueryKey = (params?: GetPaymentTypeParams,) => {
-    return [`https://finestcontro.discloud.app/docs/payment-type`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/payment-type`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -3056,7 +3056,7 @@ export const getGetMostUsedPaymentTypesUrl = (params?: GetMostUsedPaymentTypesPa
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/docs/payment-type/most-used?${stringifiedParams}` : `https://finestcontro.discloud.app/docs/payment-type/most-used`
+  return stringifiedParams.length > 0 ? `https://finestcontro.discloud.app/payment-type/most-used?${stringifiedParams}` : `https://finestcontro.discloud.app/payment-type/most-used`
 }
 
 export const getMostUsedPaymentTypes = async (params?: GetMostUsedPaymentTypesParams, options?: RequestInit): Promise<GetMostUsedPaymentTypes200Item[]> => {
@@ -3073,7 +3073,7 @@ export const getMostUsedPaymentTypes = async (params?: GetMostUsedPaymentTypesPa
 
 
 export const getGetMostUsedPaymentTypesQueryKey = (params?: GetMostUsedPaymentTypesParams,) => {
-    return [`https://finestcontro.discloud.app/docs/payment-type/most-used`, ...(params ? [params]: [])] as const;
+    return [`https://finestcontro.discloud.app/payment-type/most-used`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -3152,7 +3152,7 @@ export const getCreatePaymentTypeUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/payment-type/create`
+  return `https://finestcontro.discloud.app/payment-type/create`
 }
 
 export const createPaymentType = async (createPaymentTypeBody: CreatePaymentTypeBody, options?: RequestInit): Promise<CreatePaymentType201> => {
@@ -3224,7 +3224,7 @@ export const getUpdatePaymentTypeUrl = () => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/payment-type/update`
+  return `https://finestcontro.discloud.app/payment-type/update`
 }
 
 export const updatePaymentType = async (updatePaymentTypeBody: UpdatePaymentTypeBody, options?: RequestInit): Promise<UpdatePaymentType200> => {
@@ -3296,7 +3296,7 @@ export const getRemovePaymentTypeUrl = (id: string,) => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/payment-type/remove/${id}`
+  return `https://finestcontro.discloud.app/payment-type/remove/${id}`
 }
 
 export const removePaymentType = async (id: string, options?: RequestInit): Promise<RemovePaymentType200> => {
@@ -3367,7 +3367,7 @@ export const getRestorePaymentTypeUrl = (id: string,) => {
 
   
 
-  return `https://finestcontro.discloud.app/docs/payment-type/restore/${id}`
+  return `https://finestcontro.discloud.app/payment-type/restore/${id}`
 }
 
 export const restorePaymentType = async (id: string, options?: RequestInit): Promise<RestorePaymentType200> => {

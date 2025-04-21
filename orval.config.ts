@@ -9,7 +9,7 @@ export default defineConfig({
       client: 'react-query',
       httpClient: 'fetch',
       clean: true,
-      baseUrl: 'https://finestcontro.discloud.app/docs',
+      baseUrl: 'https://finestcontro.discloud.app',
 
       override: {
         fetch: {
