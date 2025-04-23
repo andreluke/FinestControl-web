@@ -20,14 +20,10 @@ export function ListRemovedTagsDialog() {
 
   const queryClient = useQueryClient()
 
-  const { mutateAsync: restoreTag } = useRestoreTag({
+  const { mutateAsync: restoreTag, isPending } = useRestoreTag({
     mutation: {
       onSuccess: restoredTag => {
         restoreTagOnSuccess(restoredTag, queryClient)
-        // toast.success('Tag restaurada com sucesso!')
-      },
-      onError: error => {
-        toast.error(`Erro ao restaurar tag: ${error.message}`)
       },
     },
   })
@@ -63,6 +59,7 @@ export function ListRemovedTagsDialog() {
         <RemovedTagsTable
           tags={mapTagsToTableProps(data?.tags ?? [])}
           onEdit={handleRestoreTag}
+          isPending={isPending}
         />
       </DialogContent>
     </Dialog>

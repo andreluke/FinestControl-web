@@ -6,11 +6,13 @@ import { DataTable } from './ui/data-table'
 
 type RemovedTagsTableProps = TagsTableProps & {
   onEdit: (tag: TagTableProps) => void
+  isPending: boolean
 }
 
 export function RemovedTagsTable({
   tags,
   onEdit,
+  isPending,
   ...props
 }: RemovedTagsTableProps) {
   const [selectedTags, setSelectedTags] = useState<TagTableProps[]>([])
@@ -42,7 +44,7 @@ export function RemovedTagsTable({
           <Button
             variant={'outline'}
             onClick={handleMultipleRestore}
-            disabled={selectedTags.length === 0}
+            disabled={selectedTags.length === 0 || isPending}
           >
             Restaurar tags selecionadas
           </Button>

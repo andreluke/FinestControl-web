@@ -21,13 +21,10 @@ export function ListRemovedPaymentDialog() {
 
   const queryClient = useQueryClient()
 
-  const { mutateAsync: restorePayment } = useRestorePaymentType({
+  const { mutateAsync: restorePayment, isPending } = useRestorePaymentType({
     mutation: {
       onSuccess: restoredPayment => {
         restorePaymentOnSuccess(restoredPayment, queryClient)
-      },
-      onError: error => {
-        toast.error(`Erro ao restaurar tag: ${error.message}`)
       },
     },
   })
@@ -63,6 +60,7 @@ export function ListRemovedPaymentDialog() {
         <RemovedPaymentTable
           payments={mapPaymentTypesToTableProps(data?.paymentTypes ?? [])}
           onEdit={handleRestorePayment}
+          isPending={isPending}
         />
       </DialogContent>
     </Dialog>

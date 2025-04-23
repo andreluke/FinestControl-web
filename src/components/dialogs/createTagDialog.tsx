@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { Loader2, Plus } from 'lucide-react'
+import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { TagPopover } from '../TagPopover'
-import { ErrorAlertDialog } from './errorDialog'
 
 import { type createTagData, createTagSchema } from '@/schemas/tagSchema'
 
@@ -38,8 +37,6 @@ import { CurrencyInput } from '../CurrencyInput'
 import { createTagOnSuccess } from './api/createTagQuery'
 
 export function CreateTagDialog() {
-  const [errorOpen, setErrorOpen] = useState(false)
-
   const form = useForm<createTagData>({
     resolver: zodResolver(createTagSchema),
     defaultValues: {
@@ -53,130 +50,135 @@ export function CreateTagDialog() {
 
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  const { mutate: createTag, error } = useCreateTag({
+  const { mutateAsync: createTag, isPending } = useCreateTag({
     mutation: {
       onSuccess: newTag => {
         createTagOnSuccess(newTag, queryClient)
-        toast.success('Sua tag foi criada com sucesso!', {
-          description: 'Agora você pode usar ela em suas transações.',
-        })
         form.reset()
         closeRef.current?.click()
-      },
-      onError: () => {
-        setErrorOpen(true)
       },
     },
   })
 
-  const handleCreateTag = (data: createTagData) => {
-    createTag({ data })
+  const handleCreateTag = async (data: createTagData) => {
+    toast.promise(createTag({ data }), {
+      loading: 'Loading...',
+      success: () => {
+        return {
+          message: 'Sua tag foi criada com sucesso!',
+          description: 'Agora você pode usar ela em suas transações.',
+        }
+      },
+      error: error => {
+        return `Erro ao criar tag: ${error.message}`
+      },
+    })
   }
 
   return (
-    <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            variant="outline"
-            className="flex items-center w-30 cursor-pointer"
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="flex items-center w-30 cursor-pointer"
+        >
+          <Plus />
+          Criar Tag
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Criar tag</DialogTitle>
+          <DialogDescription>Crie sua nova tag aqui!</DialogDescription>
+        </DialogHeader>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleCreateTag)}
+            className="space-y-4 py-4"
           >
-            <Plus />
-            Criar Tag
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Criar tag</DialogTitle>
-            <DialogDescription>Crie sua nova tag aqui!</DialogDescription>
-          </DialogHeader>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="items-center gap-4 grid grid-cols-4">
+                  <FormLabel className="text-right">Nome</FormLabel>
+                  <FormControl className="col-span-3">
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage className="col-span-4 col-start-2" />
+                </FormItem>
+              )}
+            />
 
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleCreateTag)}
-              className="space-y-4 py-4"
-            >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="items-center gap-4 grid grid-cols-4">
-                    <FormLabel className="text-right">Nome</FormLabel>
-                    <FormControl className="col-span-3">
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
-                  </FormItem>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="items-center gap-4 grid grid-cols-4">
+                  <FormLabel className="text-right">Descrição</FormLabel>
+                  <FormControl className="col-span-3">
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage className="col-span-4 col-start-2" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="monthGoal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meta</FormLabel>
+                  <FormControl>
+                    <CurrencyInput
+                      value={Number(field.value) || 0}
+                      onChange={val => field.onChange(val)}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      id={field.name}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cor</FormLabel>
+                  <FormControl>
+                    <TagPopover
+                      selectedColor={field.value ?? ''}
+                      onColorChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                ) : (
+                  'Criar tag'
                 )}
-              />
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="items-center gap-4 grid grid-cols-4">
-                    <FormLabel className="text-right">Descrição</FormLabel>
-                    <FormControl className="col-span-3">
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage className="col-span-4 col-start-2" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="monthGoal"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Meta</FormLabel>
-                    <FormControl>
-                      <CurrencyInput
-                        value={Number(field.value) || 0}
-                        onChange={val => field.onChange(val)}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        id={field.name}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cor</FormLabel>
-                    <FormControl>
-                      <TagPopover
-                        selectedColor={field.value ?? ''}
-                        onColorChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <DialogFooter>
-                <Button type="submit" className="cursor-pointer">
-                  Criar tag
-                </Button>
-                <DialogClose ref={closeRef} className="hidden" />
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-
-      <ErrorAlertDialog
-        open={errorOpen}
-        onOpenChange={setErrorOpen}
-        errorMessage={error?.message ?? ''}
-      />
-    </>
+              </Button>
+              <DialogClose ref={closeRef} className="hidden" />
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   )
 }

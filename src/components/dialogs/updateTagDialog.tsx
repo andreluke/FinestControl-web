@@ -30,11 +30,11 @@ import { TagPopover } from '../TagPopover'
 import { Input } from '../ui/input'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { CurrencyInput } from '../CurrencyInput'
 import { RemoveTagAlert } from '../alerts/removeTagAlert'
 import { updateTagOnSuccess } from './api/updateTagQuery'
-import { ErrorAlertDialog } from './errorDialog'
 
 interface UpdateTagDialogProps {
   tag: TagTableProps | null
@@ -73,131 +73,136 @@ export function UpdateTagDialog({ tag, onClose }: UpdateTagDialogProps) {
 
   const queryClient = useQueryClient()
 
-  const { mutate: updateTag, error } = useUpdateTag({
+  const { mutateAsync: updateTag, isPending } = useUpdateTag({
     mutation: {
       onSuccess: updateTag => {
         updateTagOnSuccess(updateTag, queryClient)
-        toast.success('Sua tag foi atualizada com sucesso!', {
-          description: 'Suas transações já receberam a atualização.',
-        })
         form.reset()
         closeRef.current?.click()
-      },
-      onError: () => {
-        setErrorOpen(true)
       },
     },
   })
 
-  const handleUpdateTag = (data: updateTagData) => {
-    updateTag({ data })
+  const handleUpdateTag = async (data: updateTagData) => {
+    toast.promise(updateTag({ data }), {
+      loading: 'Loading...',
+      success: () => {
+        return {
+          message: 'Tag atualizada com sucesso!',
+          description: 'Suas transações já receberam a atualização.',
+        }
+      },
+      error: error => {
+        return `Erro ao atualizar tag: ${error.message}`
+      },
+    })
   }
 
   return (
-    <>
-      <Dialog open={!!tag} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Atualizar tag</DialogTitle>
-            <DialogDescription>Atualize os dados da sua tag.</DialogDescription>
-          </DialogHeader>
+    <Dialog open={!!tag} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Atualizar tag</DialogTitle>
+          <DialogDescription>Atualize os dados da sua tag.</DialogDescription>
+        </DialogHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleUpdateTag)}
-              className="space-y-4 py-4"
-            >
-              <FormField
-                control={form.control}
-                name="id"
-                render={({ field }) => <input type="hidden" {...field} />}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleUpdateTag)}
+            className="space-y-4 py-4"
+          >
+            <FormField
+              control={form.control}
+              name="id"
+              render={({ field }) => <input type="hidden" {...field} />}
+            />
+
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nome da tag" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descrição</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Descrição" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="monthGoal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meta</FormLabel>
+                  <FormControl>
+                    <CurrencyInput
+                      value={Number(field.value) || 0}
+                      onChange={val => field.onChange(val)}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      id={field.name}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cor</FormLabel>
+                  <FormControl>
+                    <TagPopover
+                      selectedColor={field.value ?? ''}
+                      onColorChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
+              <RemoveTagAlert
+                id={tag?.id.toString() ?? ''}
+                onSuccessClose={onClose}
               />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome da tag" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                disabled={isPending}
+              >
+                {isPending ? (
+                  <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                ) : (
+                  'Atualizar'
                 )}
-              />
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Descrição</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Descrição" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="monthGoal"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Meta</FormLabel>
-                    <FormControl>
-                      <CurrencyInput
-                        value={Number(field.value) || 0}
-                        onChange={val => field.onChange(val)}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        id={field.name}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cor</FormLabel>
-                    <FormControl>
-                      <TagPopover
-                        selectedColor={field.value ?? ''}
-                        onColorChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <DialogFooter>
-                <RemoveTagAlert
-                  id={tag?.id.toString() ?? ''}
-                  onSuccessClose={onClose}
-                />
-                <Button type="submit" className="cursor-pointer">
-                  Atualizar
-                </Button>
-                <DialogClose ref={closeRef} className="hidden" />
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-
-      <ErrorAlertDialog
-        open={errorOpen}
-        onOpenChange={setErrorOpen}
-        errorMessage={error?.message ?? ''}
-      />
-    </>
+              </Button>
+              <DialogClose ref={closeRef} className="hidden" />
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   )
 }

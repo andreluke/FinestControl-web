@@ -9,10 +9,12 @@ import { DataTable } from './ui/data-table'
 
 type RemovedPaymentsTableProps = PaymentsTableProps & {
   onEdit: (payment: PaymentTableProps) => void
+  isPending: boolean
 }
 
 export function RemovedPaymentTable({
   payments,
+  isPending,
   onEdit,
   ...props
 }: RemovedPaymentsTableProps) {
