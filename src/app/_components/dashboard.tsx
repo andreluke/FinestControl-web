@@ -47,7 +47,7 @@ export default function Dashboard() {
       <div className="flex lg:flex-row flex-col justify-center gap-8 mt-4 w-full">
         <CurrencyCard
           variant="compact"
-          value={amountData ?? 0}
+          value={(amountData ?? 0) / 100}
           header="Saldo"
         />
         <CurrencyCard
