@@ -53,11 +53,11 @@ export default function Transacao() {
         <div className="flex flex-col justify-between items-center p-4 w-full lg:w-1/2 h-80">
           <div className="flex flex-row justify-between gap-6 w-full">
             <CurrencyCard header="Meta de gastos" value={totalMonthGoal} />
-            <CurrencyCard header="Gastos do mês" value={totalSpends / 100} />
+            <CurrencyCard header="Gastos do mês" value={totalSpends} />
           </div>
           <div className="flex flex-row justify-between gap-6 w-full">
             <CurrencyCard header="Saldo" value={(amountData ?? 0) / 100} />
-            <CurrencyCard header="Gastos do mês" value={totalSpends / 100} />
+            <CurrencyCard header="Gastos do mês" value={totalSpends} />
           </div>
         </div>
       </div>
